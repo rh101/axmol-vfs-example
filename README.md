@@ -7,4 +7,4 @@ This implementation is only for the Windows platform, but that is only a limitat
 
 This project uses [PhysFS](https://github.com/icculus/physfs) for the VFS support.
 
-A C++ wrapper for PhysFS can also be used if required. You can find it here: [physfs-cpp](https://github.com/kahowell/physfs-cpp)
+A C++ wrapper for PhysFS can also be used if required. You can find the an up-to-date version here: [physfs-cpp](https://github.com/rh101/physfs-cpp)
