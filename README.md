@@ -10,23 +10,21 @@ This project uses [PhysFS](https://github.com/icculus/physfs) for the VFS suppor
 A C++ wrapper for PhysFS can also be used if required. You can find the an up-to-date version here: [physfs-cpp](https://github.com/rh101/physfs-cpp)
 
 
-## Add support for VFS for a library that requires file access
+## Add VFS support for a library that requires file access
 
 There are a lot of examples in the Axmol engine code related to this. 
 
 See these implementations in these source files:
-```
 [FontFreeType.cpp](https://github.com/axmolengine/axmol/blob/dev/core/2d/FontFreeType.cpp)
 [AudioDecoderMp3.cpp](https://github.com/axmolengine/axmol/tree/dev/core/audio/AudioDecoderMp3.cpp)
 [AudioDecoderOgg.cpp](https://github.com/axmolengine/axmol/tree/dev/core/audio/AudioDecoderOgg.cpp)
 [AudioDecoderWav.cpp](https://github.com/axmolengine/axmol/tree/dev/core/audio/AudioDecoderWav.cpp)
 [UserDefault.cpp](https://github.com/axmolengine/axmol/tree/dev/core/base/UserDefault.cpp)
 [ZipUtils.cpp](https://github.com/axmolengine/axmol/tree/dev/core/base/ZipUtils.cpp)
-```
 
 The libraries used by the implementations above provide overridable file access routines, which would be mapped to go through `ax::FileUtils`, using the `IFileStream` interface. This ensures that any access goes through the VFS.
 
-## Working with libraries that are difficult to use with VFS
+## Working with libraries that are difficult to use with a VFS
 
 If you are working with any library that cannot be easily adapted to work with a virtual file system, then you would need to use the real file system paths as usual (not VFS paths!). In this case, you also would not be doing any file access through `ax::FileUtils`, which would most likely be the case with or without a VFS.
 
