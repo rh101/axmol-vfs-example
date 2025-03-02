@@ -2,7 +2,7 @@
 # Copyright (c) 2013-2014 cocos2d-x.org
 # Copyright (c) 2019-present Axmol Engine contributors (see AUTHORS.md).
 #
-# https://axmolengine.github.io/
+# https://axmol.dev/
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,14 @@
 # THE SOFTWARE.
 # ****************************************************************************/
 
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.20)
 
 set(APP_NAME vfs-example)
 
 project(${APP_NAME})
 
 # Speed up the build by disabling unused extensions
+set(AX_EXT_HINT OFF CACHE BOOL "The default extensions hint" FORCE)
 set(AX_ENABLE_EXT_SPINE OFF CACHE BOOL "Build extension spine" FORCE)
 set(AX_ENABLE_EXT_DRAGONBONES OFF CACHE BOOL "Build extension DragonBones" FORCE)
 set(AX_ENABLE_EXT_COCOSTUDIO OFF CACHE BOOL "Build extension cocostudio" FORCE)
@@ -37,46 +38,56 @@ set(AX_ENABLE_EXT_FAIRYGUI OFF CACHE BOOL "Build extension FairyGUI" FORCE)
 set(AX_ENABLE_EXT_ASSETMANAGER OFF CACHE BOOL "Build extension asset-manager" FORCE)
 set(AX_ENABLE_EXT_PARTICLE3D OFF CACHE BOOL "Build extension Particle3D" FORCE)
 set(AX_ENABLE_EXT_LUA OFF CACHE BOOL "Build lua libraries" FORCE)
+set(AX_ENABLE_EXT_GUI OFF CACHE BOOL "Build extension GUI" FORCE)
+set(AX_ENABLE_EXT_JSONDEFAULT OFF CACHE BOOL "Build extension JSONDefault" FORCE)
 
-if(NOT DEFINED BUILD_ENGINE_DONE) # to test vfs-example into root project
-    if(XCODE)
-        set(CMAKE_XCODE_GENERATE_TOP_LEVEL_PROJECT_ONLY TRUE)
-    endif()
+if(XCODE)
+    set(CMAKE_XCODE_GENERATE_TOP_LEVEL_PROJECT_ONLY TRUE)
+endif()
 
-    # config quick starter batch script run.bat for windows
-    if(WIN32)
-        file(RELATIVE_PATH CMAKE_BUILD_RELATIVE_DIR "${CMAKE_CURRENT_SOURCE_DIR}" "${PROJECT_BINARY_DIR}")
-        configure_file("${CMAKE_CURRENT_SOURCE_DIR}/run.bat.in" "${CMAKE_CURRENT_SOURCE_DIR}/run.bat" @ONLY)
-    endif()
+# config quick starter batch script run.bat for windows
+if(WIN32)
+    file(RELATIVE_PATH CMAKE_BUILD_RELATIVE_DIR "${CMAKE_CURRENT_SOURCE_DIR}" "${PROJECT_BINARY_DIR}")
+    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/run.bat.in" "${CMAKE_CURRENT_SOURCE_DIR}/run.bat" @ONLY)
+endif()
 
+set(_is_axmol_embed FALSE)
+if (IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/axmol")
+    set(_AX_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/axmol")
+    set(_is_axmol_embed TRUE)
+    message(STATUS "Building isolated project: ${APP_NAME}")
+else()
     set(_AX_ROOT "$ENV{AX_ROOT}")
-
     if(NOT (_AX_ROOT STREQUAL ""))
         file(TO_CMAKE_PATH ${_AX_ROOT} _AX_ROOT)
         message(STATUS "Using system env var _AX_ROOT=${_AX_ROOT}")
     else()
         message(FATAL_ERROR "Please run setup.ps1 add system env var 'AX_ROOT' to specific the engine root")
     endif()
+endif()
 
-    set(CMAKE_MODULE_PATH ${_AX_ROOT}/cmake/Modules/)
+set(CMAKE_MODULE_PATH ${_AX_ROOT}/cmake/Modules/)
 
-    include(AXBuildSet)
-    set(_AX_USE_PREBUILT FALSE)
+include(AXBuildSet)
+
+set(_AX_USE_PREBUILT FALSE)
+
+if(NOT _is_axmol_embed)
     if ((WIN32 OR LINUX) AND DEFINED AX_PREBUILT_DIR AND IS_DIRECTORY ${_AX_ROOT}/${AX_PREBUILT_DIR})
         set(_AX_USE_PREBUILT TRUE)
     endif()
+endif()
 
-    if (NOT _AX_USE_PREBUILT)
-        add_subdirectory(${_AX_ROOT}/core ${ENGINE_BINARY_PATH}/axmol/core)
-    endif()
+if (NOT _AX_USE_PREBUILT)
+    add_subdirectory(${_AX_ROOT}/core ${ENGINE_BINARY_PATH}/axmol/core)
 endif()
 
 # The common cross-platforms source files and header files
 file(GLOB_RECURSE GAME_HEADER
-    Source/*.h
+    Source/*.h Source/*.hpp
     )
 file(GLOB_RECURSE GAME_SOURCE
-    Source/*.cpp
+    Source/*.cpp Source/*.c
     )
 
 set(GAME_INC_DIRS
@@ -153,7 +164,6 @@ elseif(APPLE)
     elseif(MACOSX)
         set(APP_UI_RES
             proj.ios_mac/mac/Icon.icns
-            proj.ios_mac/mac/Info.plist
             )
         list(APPEND GAME_SOURCE
              proj.ios_mac/mac/main.cpp
@@ -175,7 +185,7 @@ else()
     add_library(${APP_NAME} SHARED ${APP_SOURCES})
     # whole archive for jni
     target_link_libraries(${APP_NAME} -Wl,--whole-archive cpp_android_spec -Wl,--no-whole-archive)
-    config_android_shared_libs("org.axmol.lib" "${CMAKE_CURRENT_SOURCE_DIR}/proj.android/app/src")
+    config_android_shared_libs("dev.axmol.lib" "${CMAKE_CURRENT_SOURCE_DIR}/proj.android/app/src")
 endif()
 
 if (NOT _AX_USE_PREBUILT)
@@ -184,7 +194,7 @@ endif()
 
 # The optional thirdparties(not dependent by engine)
 if (AX_WITH_YAML_CPP)
-    list(APPEND GAME_INC_DIRS "${_AX_ROOT}/thirdparty/yaml-cpp/include")
+    list(APPEND GAME_INC_DIRS "${_AX_ROOT}/3rdparty/yaml-cpp/include")
 endif()
 
 target_include_directories(${APP_NAME} PRIVATE ${GAME_INC_DIRS})
@@ -196,6 +206,7 @@ target_include_directories(${APP_NAME} PRIVATE ${physfs_SOURCE_DIR})
 
 # mark app resources, resource will be copy auto after mark
 ax_setup_app_config(${APP_NAME})
+
 if(APPLE)
     set_target_properties(${APP_NAME} PROPERTIES RESOURCE "${APP_UI_RES}")
     set_xcode_property(${APP_NAME} INSTALL_PATH "\$(LOCAL_APPS_DIR)")
@@ -241,10 +252,6 @@ if (_AX_USE_PREBUILT) # support windows and linux
 
     include(AXLinkHelpers)
     ax_link_cxx_prebuilt(${APP_NAME} ${_AX_ROOT} ${AX_PREBUILT_DIR})
-endif()
-
-if (NOT DEFINED BUILD_ENGINE_DONE)
-    ax_uwp_set_all_targets_deploy_min_version()
 endif()
 
 ax_setup_app_props(${APP_NAME})

@@ -2,7 +2,7 @@
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Axmol Engine contributors (see AUTHORS.md).
 
- https://axmolengine.github.io/
+ https://axmol.dev/
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -39,12 +39,9 @@
 #    include "audio/AudioEngine.h"
 #endif
 
-USING_NS_AX;
+using namespace ax;
 
 static ax::Size designResolutionSize = ax::Size(1280, 720);
-static ax::Size smallResolutionSize  = ax::Size(480, 320);
-static ax::Size mediumResolutionSize = ax::Size(1024, 768);
-static ax::Size largeResolutionSize  = ax::Size(2048, 1536);
 
 AppDelegate::AppDelegate() {}
 
@@ -56,6 +53,8 @@ void AppDelegate::initGLContextAttrs()
 {
     // set OpenGL context attributes: red,green,blue,alpha,depth,stencil,multisamplesCount
     GLContextAttrs glContextAttrs = {8, 8, 8, 8, 24, 8, 0};
+    // since axmol-2.2 vsync was enabled in engine by default
+    // glContextAttrs.vsync = false;
 
     GLView::setGLContextAttrs(glContextAttrs);
 }
@@ -86,25 +85,6 @@ bool AppDelegate::applicationDidFinishLaunching()
     // Set the design resolution
     glView->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height,
                                     ResolutionPolicy::SHOW_ALL);
-    auto frameSize = glView->getFrameSize();
-    // if the frame's height is larger than the height of medium size.
-    if (frameSize.height > mediumResolutionSize.height)
-    {
-        director->setContentScaleFactor(MIN(largeResolutionSize.height / designResolutionSize.height,
-                                            largeResolutionSize.width / designResolutionSize.width));
-    }
-    // if the frame's height is larger than the height of small size.
-    else if (frameSize.height > smallResolutionSize.height)
-    {
-        director->setContentScaleFactor(MIN(mediumResolutionSize.height / designResolutionSize.height,
-                                            mediumResolutionSize.width / designResolutionSize.width));
-    }
-    // if the frame's height is smaller than the height of medium size.
-    else
-    {
-        director->setContentScaleFactor(MIN(smallResolutionSize.height / designResolutionSize.height,
-                                            smallResolutionSize.width / designResolutionSize.width));
-    }
 
     // Create VFS FileUtils based on PhysFS and set it as the default
     auto* vfsFileUtils = myapp::VfsFileUtils::create();

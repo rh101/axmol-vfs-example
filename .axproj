@@ -1,0 +1,3 @@
+package_name=org.axmol.vfs_example
+engine_version=2.4.0-4cd128f
+project_type=cpp

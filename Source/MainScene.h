@@ -2,7 +2,7 @@
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Axmol Engine contributors (see AUTHORS.md).
 
- https://axmolengine.github.io/
+ https://axmol.dev/
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,6 @@
 
 #include "axmol.h"
 
-
 class MainScene : public ax::Scene
 {
     enum class GameState
@@ -40,7 +39,7 @@ class MainScene : public ax::Scene
         menu1,
         menu2,
     };
-    
+
 public:
     bool init() override;
     void update(float delta) override;
@@ -61,10 +60,16 @@ public:
     void onKeyReleased(ax::EventKeyboard::KeyCode code, ax::Event* event);
 
     // a selector callback
-    void menuCloseCallback(Ref* sender);
+    void menuCloseCallback(ax::Object* sender);
+
+    MainScene();
+    ~MainScene();
 
 private:
-    GameState _gameState = GameState::init;
+    GameState _gameState                            = GameState::init;
+    ax::EventListenerTouchAllAtOnce* _touchListener = nullptr;
+    ax::EventListenerKeyboard* _keyboardListener    = nullptr;
+    ax::EventListenerMouse* _mouseListener          = nullptr;
 };
 
 #endif  // __MAIN_SCENE_H__

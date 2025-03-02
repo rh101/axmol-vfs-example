@@ -2,7 +2,7 @@
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Axmol Engine contributors (see AUTHORS.md).
 
- https://axmolengine.github.io/
+ https://axmol.dev/
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -37,7 +37,7 @@ class AppDelegate : private ax::Application
 {
 public:
     AppDelegate();
-    virtual ~AppDelegate();
+    ~AppDelegate() override;
 
     void initGLContextAttrs() override;
 
@@ -50,13 +50,11 @@ public:
 
     /**
     @brief  Called when the application moves to the background
-    @param  the pointer of the application
     */
     void applicationDidEnterBackground() override;
 
     /**
     @brief  Called when the application reenters the foreground
-    @param  the pointer of the application
     */
     void applicationWillEnterForeground() override;
 };

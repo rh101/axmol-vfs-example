@@ -1,8 +1,9 @@
 /****************************************************************************
  Copyright (c) 2010 cocos2d-x.org
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+ Copyright (c) 2019-present Axmol Engine contributors (see AUTHORS.md).
 
- https://axmolengine.github.io/
+ https://axmol.dev/
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -24,12 +25,24 @@
  ****************************************************************************/
 
 #include "AppDelegate.h"
-#include "cocos2d.h"
+#include "axmol.h"
 
-USING_NS_AX;
+using namespace ax;
+
+int axmol_main()
+{
+    // create the application instance
+    AppDelegate app;
+    return Application::getInstance()->run();
+}
 
 int main(int argc, char* argv[])
 {
-    AppDelegate app;
-    return Application::getInstance()->run();
+    auto result = axmol_main();
+
+#if AX_OBJECT_LEAK_DETECTION
+    Object::printLeaks();
+#endif
+
+    return result;
 }

@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "win32/FileUtils-win32.h"
 #include "axmol.h"
@@ -61,7 +61,7 @@ protected:
     *  @param dirPath The path of the directory, it must be an absolute path.
     *  @return True if the directory have been created successfully, false if not.
     */
-    bool createDirectory(std::string_view dirPath) const override;
+    bool createDirectories(std::string_view dirPath) const override;
 
     /**
     *  Removes a directory.

@@ -1,7 +1,8 @@
 /****************************************************************************
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+ Copyright (c) 2019-present Axmol Engine contributors (see AUTHORS.md).
 
- https://axmolengine.github.io/
+ https://axmol.dev/
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -30,11 +31,25 @@
 #include <unistd.h>
 #include <string>
 
-USING_NS_AX;
+using namespace ax;
+
+namespace
+{
+std::unique_ptr<AppDelegate> appDelegate;
+}
+
+void axmol_wasm_app_exit() 
+{
+    appDelegate = nullptr;
+
+#if AX_OBJECT_LEAK_DETECTION
+    Object::printLeaks();
+#endif
+}
 
 int main(int argc, char** argv)
 {
     // create the application instance
-    AppDelegate app;
+    appDelegate.reset(new AppDelegate());
     return Application::getInstance()->run();
 }

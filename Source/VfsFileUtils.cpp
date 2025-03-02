@@ -1,4 +1,4 @@
-﻿/*
+/*
  © Copyright 2023 rh101
 */
 
@@ -203,7 +203,7 @@ bool VfsFileUtils::removeFile(std::string_view filepath) const
     return PHYSFS_delete(filepath.data());
 }
 
-bool VfsFileUtils::createDirectory(std::string_view dirPath) const
+bool VfsFileUtils::createDirectories(std::string_view dirPath) const
 {
     return PHYSFS_mkdir(dirPath.data());
 }
