@@ -171,7 +171,7 @@ bool VfsFileUtils::renameFile(std::string_view oldfullpath, std::string_view new
     {
         if (!removeFile(newfullpath))
         {
-            AXLOGERROR("Fail to delete file %s !Error code is 0x%x", newfullpath.data(), GetLastError());
+            AXLOGE("Fail to delete file {} !Error code is {:08X}", newfullpath.data(), GetLastError());
         }
     }
 
@@ -181,7 +181,7 @@ bool VfsFileUtils::renameFile(std::string_view oldfullpath, std::string_view new
     }
     else
     {
-        AXLOGERROR("Fail to rename file %s to %s !Error code is 0x%x", oldfullpath.data(), newfullpath.data(), GetLastError());
+        AXLOGE("Fail to rename file {} to {} !Error code is {:08X}", oldfullpath.data(), newfullpath.data(), GetLastError());
         return false;
     }
 }

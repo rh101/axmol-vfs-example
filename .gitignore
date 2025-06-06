@@ -354,6 +354,9 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
+# ADXE and COCOS2D-X related
+/cocos2d
+
 # Built application files
 *.apk
 *.aar
@@ -452,8 +455,7 @@ xcuserdata/
 project.xcworkspace
 
 .vscode/
+/proj.android/app/src/org/cocos2dx/lib/SharedLoader.java
 /proj.android/app/src/org/axmol/lib/SharedLoader.java
 /run.bat
 /run.bat.txt
-
-_d/

@@ -31,7 +31,15 @@
 
 #include "MainScene.h"
 #include "Utility.h"
-#include "VfsFileUtils.h"
+
+#if AX_TARGET_PLATFORM == AX_PLATFORM_WIN32
+    #include "platform/win32/VfsFileUtils.h"
+#elif AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID
+#    include "platform/android/VfsFileUtils.h"
+
+#else
+    #error "Unsupported platform"
+#endif
 
 #define USE_AUDIO_ENGINE 1
 

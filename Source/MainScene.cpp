@@ -27,6 +27,8 @@
 
 using namespace ax;
 
+static int s_sceneID = 1000;
+
 // Print useful error message instead of segfaulting when files are not there.
 static void problemLoading(const char* filename)
 {
@@ -199,6 +201,7 @@ void MainScene::onMouseScroll(Event* event)
 
 void MainScene::onKeyPressed(EventKeyboard::KeyCode code, Event* event)
 {
+    AXLOGD("Scene: #{} onKeyPressed, keycode: {}", _sceneID, static_cast<int>(code));
 }
 
 void MainScene::onKeyReleased(EventKeyboard::KeyCode code, Event* event)
@@ -281,14 +284,19 @@ void MainScene::menuCloseCallback(ax::Object* sender)
 
 MainScene::MainScene()
 {
+    _sceneID = ++s_sceneID;
+    AXLOGD("Scene: ctor: #{}", _sceneID);
 }
 
 MainScene::~MainScene()
 {
+    AXLOGD("~Scene: dtor: #{}", _sceneID);
+
     if (_touchListener)
         _eventDispatcher->removeEventListener(_touchListener);
     if (_keyboardListener)
         _eventDispatcher->removeEventListener(_keyboardListener);
     if (_mouseListener)
         _eventDispatcher->removeEventListener(_mouseListener);
+    _sceneID = -1;
 }
