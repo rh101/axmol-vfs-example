@@ -1,6 +1,6 @@
 #pragma once
 
-#include "win32/FileUtils-win32.h"
+#include "platform/win32/FileUtils-win32.h"
 #include "axmol.h"
 #include <string>
 
