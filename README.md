@@ -15,12 +15,12 @@ A C++ wrapper for PhysFS can also be used if required. You can find the an up-to
 There are a lot of examples in the Axmol engine code related to this. 
 
 See these implementations in these source files:
-* [FontFreeType.cpp](https://github.com/axmolengine/axmol/blob/dev/core/2d/FontFreeType.cpp)
-* [AudioDecoderMp3.cpp](https://github.com/axmolengine/axmol/tree/dev/core/audio/AudioDecoderMp3.cpp)
-* [AudioDecoderOgg.cpp](https://github.com/axmolengine/axmol/tree/dev/core/audio/AudioDecoderOgg.cpp)
-* [AudioDecoderWav.cpp](https://github.com/axmolengine/axmol/tree/dev/core/audio/AudioDecoderWav.cpp)
-* [UserDefault.cpp](https://github.com/axmolengine/axmol/tree/dev/core/base/UserDefault.cpp)
-* [ZipUtils.cpp](https://github.com/axmolengine/axmol/tree/dev/core/base/ZipUtils.cpp)
+* [FontFreeType.cpp](https://github.com/axmolengine/axmol/blob/dev/axmol/2d/FontFreeType.cpp)
+* [AudioDecoderMp3.cpp](https://github.com/axmolengine/axmol/tree/dev/axmol/audio/AudioDecoderMp3.cpp)
+* [AudioDecoderOgg.cpp](https://github.com/axmolengine/axmol/tree/dev/axmol/audio/AudioDecoderOgg.cpp)
+* [AudioDecoderWav.cpp](https://github.com/axmolengine/axmol/tree/dev/axmol/audio/AudioDecoderWav.cpp)
+* [UserDefault.cpp](https://github.com/axmolengine/axmol/tree/dev/axmol/base/UserDefault.cpp)
+* [ZipUtils.cpp](https://github.com/axmolengine/axmol/tree/dev/axmol/base/ZipUtils.cpp)
 
 The libraries used by the implementations above provide overridable file access routines, which would be mapped to go through `ax::FileUtils`, using the `IFileStream` interface. This ensures that any access goes through the VFS.
 
